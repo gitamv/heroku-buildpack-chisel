@@ -27,5 +27,5 @@ mkdir -p "$BUILD_DIR/bin"
 cp "$BUILDPACK_DIR/bin/start-chisel" $BUILD_DIR/bin/
 chmod +x $BUILD_DIR/bin/start-chisel
 
-"$BUILD_DIR/bin/chisel" --version
+"$BUILD_DIR/bin/chisel" --version || :
 puts_step "Chisel instalation done"
