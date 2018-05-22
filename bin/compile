@@ -1,16 +1,31 @@
-#!/bin/sh
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
 
-indent() {
-  sed -u 's/^/       /'
-}
+# fail fast
+set -ueo pipefail
 
-echo "-----> Found a hello.txt"
+# debug
+# set -x
 
-# if hello.txt is empty, abort the build
-if [ ! -s $1/hello.txt ]; then
-  echo "hello.txt was empty" | indent
-  exit 1
-fi
+# clean up leaking environment
+unset GIT_DIR
 
-# replace hello with goodbye in a new file
-cat $1/hello.txt | sed -e "s/[Hh]ello/Goodbye/g" > $1/goodbye.txt
+source /dev/stdin <<< "$(curl -s --retry 3 https://lang-common.s3.amazonaws.com/buildpack-stdlib/v4/stdlib.sh)"
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+BUILDPACK_DIR="$(dirname $(dirname "$0"))"
+
+puts_step "Vendoring Chisel into slug"
+mkdir -p "$BUILD_DIR/bin"
+gunzip "$BUILDPACK_DIR/chisel_linux_amd64.gz"
+mv chisel_linux_amd64 "$BUILD_DIR/bin/chisel"
+chmod +x "$BUILD_DIR/bin/chisel" 
+
+puts_step "Vendoring start-chisel into slub"
+mkdir -p $BUILD_DIR/bin
+cp "$BUILDPACK_DIR/bin/start-chisel" $BUILD_DIR/bin/
+chmod +x $BUILD_DIR/bin/start-chisel
+
+"$BUILD_DIR/.chisel/chisel" version
+puts_step "Chisel instalation done"
