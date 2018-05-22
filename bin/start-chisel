@@ -13,7 +13,7 @@ run-chisel() {
   mkfifo "$sentinel"
 
   # Start processes.
-  aux-start chisel SIGINT chisel client --fingerprint ${CHISEL_FINGERPRINT:-"aa:aa"} --auth ${CHISEL_AUTH:-"admin:pass"} ${CHISEL_ENDPOINT:-"http://localhost.com"} ${CHISEL_TARGETS:-"8080"}
+  aux-start chisel SIGINT chisel client --fingerprint ${CHISEL_FINGERPRINT:-"aa:aa"} --auth ${CHISEL_AUTH:-"admin:pass"} ${CHISEL_ENDPOINT:-"http://localhost"} ${CHISEL_TARGETS:-"8080"}
   app-start SIGTERM "$@"
   pid=$!
 
