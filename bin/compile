@@ -16,16 +16,16 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 BUILDPACK_DIR="$(dirname $(dirname "$0"))"
 
-puts_step "Vendoring Chisel into slug"
+puts_step "Vendoring chisel into slug"
 mkdir -p "$BUILD_DIR/bin"
 gunzip "$BUILDPACK_DIR/chisel_linux_amd64.gz"
 mv chisel_linux_amd64 "$BUILD_DIR/bin/chisel"
 chmod +x "$BUILD_DIR/bin/chisel" 
 
 puts_step "Vendoring start-chisel into slub"
-mkdir -p $BUILD_DIR/bin
+mkdir -p "$BUILD_DIR/bin"
 cp "$BUILDPACK_DIR/bin/start-chisel" $BUILD_DIR/bin/
 chmod +x $BUILD_DIR/bin/start-chisel
 
-"$BUILD_DIR/.chisel/chisel" version
+"$BUILD_DIR/bin/chisel" version
 puts_step "Chisel instalation done"
